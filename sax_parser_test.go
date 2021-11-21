@@ -101,5 +101,5 @@ func TestExampleXml(t *testing.T) {
 	}
 
 	parser := NewParser(file, &SaxHandlerTest{t:t})
-	parser.parse()
+	parser.Parse()
 }

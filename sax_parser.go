@@ -18,7 +18,7 @@ func NewParser(reader io.Reader, handler SaxHandler) *SaxParser {
 	}
 }
 
-func (p *SaxParser) parse() error {
+func (p *SaxParser) Parse() error {
 	for token, err := p.decoder.Token(); err != io.EOF; token, err = p.decoder.Token() {
 		if err != nil {
 			return err
