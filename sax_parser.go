@@ -2,7 +2,6 @@ package saxparser
 
 import (
 	"encoding/xml"
-	"errors"
 	"io"
 )
 
@@ -42,8 +41,10 @@ func (p *SaxParser) Parse() error {
 				p.handler.ProcessingInstruction(t.Target, t.Inst)
 			case xml.Directive:
 				p.handler.Directive(t)
-			default:
-				return errors.New("Unknown XML tag")
+			/*
+			 * There's no default branch as all the token types have been
+			 * handled.
+			 */
 		}
 	}
 

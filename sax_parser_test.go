@@ -101,5 +101,29 @@ func TestExampleXml(t *testing.T) {
 	}
 
 	parser := NewParser(file, &SaxHandlerTest{t:t})
-	parser.Parse()
+	parseErr := parser.Parse()
+
+	if parseErr != nil {
+		t.Errorf("Error during parsing: %s", err.Error())
+	}
+}
+
+func TestErrorXml(t *testing.T) {
+	file, err := os.Open("test_data/error.xml")
+
+	if err != nil {
+		t.Errorf("Error opening error.xml: %s", err.Error())
+	}
+
+	parser := NewParser(file, &SaxHandlerTest{t:t})
+	parseErr := parser.Parse()
+
+	if parseErr == nil {
+		t.Errorf("Expected an error during parsing")
+	} else {
+		if  expectedError := "XML syntax error on line 4: expected attribute name in element";
+			parseErr.Error() != expectedError {
+			t.Errorf("Received error message: %s\tExpected error was: %s", parseErr.Error(), expectedError)
+		}
+	}
 }
