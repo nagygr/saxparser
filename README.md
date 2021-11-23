@@ -1,4 +1,4 @@
-# The saxparser package
+# The saxparser module
 
 A SAX parser in Go.
 
