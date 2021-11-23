@@ -1,13 +1,13 @@
 package saxparser
 
 import (
-	"testing"
 	"os"
 	"strings"
+	"testing"
 )
 
 type SaxHandlerTest struct {
-	t *testing.T
+	t       *testing.T
 	inApple bool
 }
 
@@ -75,21 +75,17 @@ func (h *SaxHandlerTest) StartElement(name string, attributes map[string]string)
 	}
 }
 
-type ReaderTest struct {}
+type ReaderTest struct{}
 
-func (r* ReaderTest) Read(buf []byte) (n int, err error) {
+func (r *ReaderTest) Read(buf []byte) (n int, err error) {
 	return 0, nil
 }
 
 func TestNewParser(t *testing.T) {
-	parser := NewParser(&ReaderTest{}, &SaxHandlerTest{t:t})
+	parser := NewParser(&ReaderTest{}, &SaxHandlerTest{t: t})
 
 	if parser.decoder == nil {
 		t.Errorf("SaxParser.decoder is nil")
-	}
-
-	if _, ok := parser.handler.(SaxHandler); !ok {
-		t.Errorf("SaxParser.handler is not a SaxParser")
 	}
 }
 
@@ -99,8 +95,9 @@ func TestExampleXml(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error opening example.xml: %s", err.Error())
 	}
+	defer file.Close()
 
-	parser := NewParser(file, &SaxHandlerTest{t:t})
+	parser := NewParser(file, &SaxHandlerTest{t: t})
 	parseErr := parser.Parse()
 
 	if parseErr != nil {
@@ -114,15 +111,15 @@ func TestErrorXml(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error opening error.xml: %s", err.Error())
 	}
+	defer file.Close()
 
-	parser := NewParser(file, &SaxHandlerTest{t:t})
+	parser := NewParser(file, &SaxHandlerTest{t: t})
 	parseErr := parser.Parse()
 
 	if parseErr == nil {
 		t.Errorf("Expected an error during parsing")
 	} else {
-		if  expectedError := "XML syntax error on line 4: expected attribute name in element";
-			parseErr.Error() != expectedError {
+		if expectedError := "XML syntax error on line 4: expected attribute name in element"; parseErr.Error() != expectedError {
 			t.Errorf("Received error message: %s\tExpected error was: %s", parseErr.Error(), expectedError)
 		}
 	}
